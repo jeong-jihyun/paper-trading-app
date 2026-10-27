@@ -52,6 +52,20 @@ EXPO_PUBLIC_DEMO=1 EXPO_PUBLIC_FIREBASE_API_KEY=demo EXPO_PUBLIC_FIREBASE_PROJEC
 # 로그인 화면부터 보려면 주소 끝에 #login 을 붙여서 접속
 ```
 
+### 웹으로 배포하기 (Vercel, 자동 배포)
+GitHub에 올리면 Vercel이 자동으로 빌드·배포합니다. 설정은 한 번만 하면 됩니다.
+
+| Vercel 프로젝트 설정 | 값 |
+|---|---|
+| Root Directory | `app` |
+| Install Command | `npm install --legacy-peer-deps` |
+| Build Command | `npx expo export --platform web --output-dir dist` |
+| Output Directory | `dist` |
+| Node.js Version | `22.x` |
+| Environment Variables | `.env.example`의 `EXPO_PUBLIC_FIREBASE_*` 6개 (Firebase 웹 설정값, 공개용) |
+
+공공데이터 인증키와 Firebase 관리자 키는 **웹 배포에 넣지 않습니다.** 시세 수집용으로 GitHub Secrets에만 등록합니다.
+
 ### 시세 자동 수집 (GitHub Actions)
 1. 이 저장소를 GitHub에 올린 뒤 **Settings → Secrets and variables → Actions → New repository secret**.
 2. `DATA_GO_KR_KEY` (공공데이터 인증키), `FIREBASE_SERVICE_ACCOUNT` (서비스 계정 JSON 전체)를 각각 등록.
