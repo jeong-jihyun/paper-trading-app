@@ -20,7 +20,7 @@ const DRY = args.has('--dry-run');
 const SAMPLE = args.has('--sample');
 
 // 공공데이터포털 마이페이지 > 활용신청 상세의 End Point (V2) + 오퍼레이션 이름
-const ENDPOINT = 'https://apis.data.go.kr/1160100/GetStockSecuritiesInfoService_V2/getStockPriceInfo';
+const ENDPOINT = 'https://apis.data.go.kr/1160100/GetStockSecuritiesInfoService_V2/getStockPriceInfo_V2';
 
 /** 포털의 "일반 인증키"는 인코딩(%3D%3D로 끝남)·디코딩(==로 끝남) 두 가지가 있다. 어느 쪽을 넣어도 되게 맞춘다. */
 function normalizeKey(raw: string): string {
