@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "모의투자 트레이더",
+    "slug": "paper-trading-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jeongjihyun.papertrading"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.jeongjihyun.papertrading"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}

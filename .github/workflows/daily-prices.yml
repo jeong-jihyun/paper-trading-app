@@ -1,0 +1,26 @@
+name: daily-prices
+
+# 평일 저녁 6시(한국시간)에 시세를 수집한다. cron은 UTC 기준이라 9시간을 뺀 09:00.
+# 금융위원회 데이터는 영업일 다음 날 아침에 올라오는 경우도 있어, 최근 7일 중 가장 최근 데이터를 쓴다.
+on:
+  schedule:
+    - cron: '0 9 * * 1-5'
+  workflow_dispatch: {}
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: 앱 의존성 없이 스크립트만 설치
+        working-directory: scripts
+        run: npm install
+      - name: 시세 수집·주문 체결·알림 검사
+        working-directory: scripts
+        env:
+          DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: npm run collect

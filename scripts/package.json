@@ -1,0 +1,18 @@
+{
+  "name": "paper-trading-scripts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "collect": "tsx collect.ts",
+    "collect:sample": "tsx collect.ts --sample --dry-run",
+    "test": "tsx --test lib.test.ts"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

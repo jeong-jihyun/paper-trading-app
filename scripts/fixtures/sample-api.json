@@ -1,0 +1,18 @@
+{
+  "response": {
+    "header": { "resultCode": "00", "resultMsg": "NORMAL SERVICE." },
+    "body": {
+      "numOfRows": 3,
+      "pageNo": 1,
+      "totalCount": 4,
+      "items": {
+        "item": [
+          { "basDt": "20261027", "srtnCd": "005930", "itmsNm": "삼성전자", "mrktCtg": "KOSPI", "clpr": "71200", "vs": "-300", "fltRt": "-0.42", "mkp": "71500", "hipr": "71800", "lopr": "70900", "trqu": "1200000" },
+          { "basDt": "20261027", "srtnCd": "035720", "itmsNm": "카카오", "mrktCtg": "KOSPI", "clpr": "41850", "vs": "350", "fltRt": "0.84", "mkp": "41500", "hipr": "42100", "lopr": "41300", "trqu": "1900000" },
+          { "basDt": "20261027", "srtnCd": "263750", "itmsNm": "펄어비스", "mrktCtg": "KOSDAQ", "clpr": "34150", "vs": "450", "fltRt": "1.33", "mkp": "33700", "hipr": "34500", "lopr": "33500", "trqu": "260000" },
+          { "basDt": "20261027", "srtnCd": "900000", "itmsNm": "코넥스샘플", "mrktCtg": "KONEX", "clpr": "1000", "vs": "0", "fltRt": "0", "mkp": "1000", "hipr": "1000", "lopr": "1000", "trqu": "10" }
+        ]
+      }
+    }
+  }
+}

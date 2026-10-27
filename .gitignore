@@ -1,0 +1,11 @@
+node_modules/
+.expo/
+dist/
+.env
+*.log
+__pycache__/
+*.pyc
+.DS_Store
+# 서비스 계정 키 등 비밀 파일은 절대 올리지 않는다
+*serviceAccount*.json
+*firebase-adminsdk*.json

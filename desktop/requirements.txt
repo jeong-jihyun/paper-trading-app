@@ -1,0 +1,3 @@
+# 모의투자(기본)는 추가 설치가 필요 없습니다 (파이썬 표준 라이브러리 tkinter 사용).
+# 대신증권 CYBOS Plus 연결(--cybos)을 쓸 때만 아래를 설치하세요 (윈도우 전용).
+pywin32; sys_platform == "win32"
