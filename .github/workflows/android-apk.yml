@@ -56,7 +56,7 @@ jobs:
 
       - name: APK 빌드 (release)
         working-directory: app/android
-        run: ./gradlew assembleRelease --no-daemon -Dorg.gradle.jvmargs="-Xmx3g"
+        run: ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a -Dorg.gradle.jvmargs="-Xmx3g"
 
       - name: APK 이름 정리
         run: |
