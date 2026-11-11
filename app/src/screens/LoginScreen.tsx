@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, Text } from 'react-native';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, isFirebaseConfigured } from '../firebase';
 import { Btn, Field, Notice, s } from '../components/ui';
 import { colors } from '../utils/format';
@@ -23,6 +23,19 @@ export default function LoginScreen() {
     }
   };
 
+  const reset = async () => {
+    if (!email.trim()) return notify('비밀번호 재설정', '위에 이메일을 먼저 입력하세요.');
+    setBusy(true);
+    try {
+      await sendPasswordResetEmail(auth, email.trim());
+      notify('메일을 보냈습니다', '받은편지함(스팸함 포함)의 링크로 새 비밀번호를 정한 뒤 다시 로그인하세요.');
+    } catch (e) {
+      notify('재설정 실패', e instanceof Error ? e.message : '알 수 없는 오류');
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <ScrollView style={s.screen} contentContainerStyle={s.pad}>
       <Notice />
@@ -36,6 +49,7 @@ export default function LoginScreen() {
       <Field label="비밀번호 (6자 이상)" value={password} onChangeText={setPassword} secureTextEntry />
       <Btn title="로그인" onPress={() => run('login')} disabled={busy} />
       <Btn title="회원가입 (가상 자금 1억 원 지급)" kind="ghost" onPress={() => run('signup')} disabled={busy} style={{ marginTop: 10 }} />
+      <Btn title="비밀번호를 잊었어요 (재설정 메일 받기)" kind="ghost" onPress={reset} disabled={busy} style={{ marginTop: 10 }} />
     </ScrollView>
   );
 }

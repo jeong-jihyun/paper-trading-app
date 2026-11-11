@@ -23,6 +23,7 @@ export const signInWithEmailAndPassword = async (_a: unknown, email: string) => 
   emit();
 };
 export const createUserWithEmailAndPassword = signInWithEmailAndPassword;
+export const sendPasswordResetEmail = async (_a: unknown, _email: string) => {};
 export const signOut = async () => {
   current = null;
   emit();
