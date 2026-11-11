@@ -47,7 +47,7 @@ export function IssueList({ issues, okText }: { issues: Issue[]; okText?: string
         return (
           <View key={i} style={[g.issue, { backgroundColor: lv.bg }]}>
             <Text style={{ color: lv.fg, fontWeight: '700' }}>
-              {lv.icon} {lv.name}: {it.msg}
+              {lv.icon} {it.msg}
             </Text>
             {it.how && <Text style={{ color: lv.fg, marginTop: 2, fontSize: 13 }}>→ {it.how}</Text>}
           </View>
@@ -59,37 +59,25 @@ export function IssueList({ issues, okText }: { issues: Issue[]; okText?: string
 
 /** 각 탭 맨 위의 "지금 할 일" 띠. here = 이 탭의 이름. */
 export function GuideBanner({ here }: { here: keyof TabParamList }) {
-  const { current, doneCount, steps } = useGuide();
+  const { current, steps } = useGuide();
   const nav = useNavigation<BottomTabNavigationProp<TabParamList>>();
   if (steps.length === 0) return null;
   if (!current) {
     return (
       <Pressable style={[g.banner, { backgroundColor: '#DCFCE7', borderColor: '#86EFAC' }]} onPress={() => nav.navigate('Guide')}>
-        <Text style={{ color: '#166534', fontWeight: '700' }}>✅ 연습 순서를 모두 마쳤습니다. 가이드에서 투자 원칙을 다시 볼 수 있습니다.</Text>
+        <Text style={{ color: '#166534', fontWeight: '700' }}>✅ 연습 완료</Text>
       </Pressable>
     );
   }
   const onThisTab = current.tab === here;
   return (
-    <View style={g.banner}>
-      <Text style={g.bannerStep}>
-        지금 할 일 · {current.no}/{steps.length}단계 (완료 {doneCount})
+    <Pressable style={g.banner} onPress={() => !onThisTab && nav.navigate(current.tab)}>
+      <Text style={g.bannerTitle}>
+        👉 {current.no}/{steps.length} {current.title}
+        {onThisTab ? '' : `  (${current.tabLabel} 탭 →)`}
       </Text>
-      <Text style={g.bannerTitle}>{current.title}</Text>
       <Text style={g.bannerDesc}>{current.desc}</Text>
-      <View style={{ flexDirection: 'row', marginTop: 8 }}>
-        {onThisTab ? (
-          <Text style={[g.chip, { backgroundColor: colors.brand, color: '#fff' }]}>👇 이 화면에서 하면 됩니다</Text>
-        ) : (
-          <Pressable onPress={() => nav.navigate(current.tab)}>
-            <Text style={[g.chip, { backgroundColor: colors.brand, color: '#fff' }]}>{current.tabLabel} 탭으로 가기 →</Text>
-          </Pressable>
-        )}
-        <Pressable onPress={() => nav.navigate('Guide')}>
-          <Text style={[g.chip, { marginLeft: 8 }]}>전체 순서 보기</Text>
-        </Pressable>
-      </View>
-    </View>
+    </Pressable>
   );
 }
 

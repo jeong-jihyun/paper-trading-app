@@ -11,9 +11,9 @@ import { changeColor, colors, pct, signed, won } from '../utils/format';
 import type { HistoryPoint, WatchItem } from '../types';
 import type { RootParamList } from '../navigation';
 import { notify } from '../utils/notify';
-import { Help, IssueList } from '../components/guide';
+import { IssueList } from '../components/guide';
 import { useGuide } from '../context/GuideContext';
-import { HELP, checkAlertInput, modelAnswer } from '../utils/guide';
+import { checkAlertInput, modelAnswer } from '../utils/guide';
 
 export default function StockDetailScreen({ route }: NativeStackScreenProps<RootParamList, 'StockDetail'>) {
   const { user } = useAuth();
@@ -67,8 +67,7 @@ export default function StockDetailScreen({ route }: NativeStackScreenProps<Root
           <Text style={[s.rowSub, { marginTop: 8 }]}>
             시가 {won(q.open)} · 고가 {won(q.high)} · 저가 {won(q.low)} · 거래량 {won(q.volume)}
           </Text>
-          <View style={{ height: 8 }} />
-          <Help label="이 화면 보는 법 (색·차트·거래량)" text={`${HELP.price}\n\n차트는 최근 종가의 흐름입니다. 오른쪽으로 갈수록 최근이며, 꾸준히 오르는지 급하게 움직이는지 먼저 봅니다.`} />
+
         </View>
         <Btn
           title={watching ? '관심종목 해제' : '관심종목 추가'}
@@ -81,16 +80,12 @@ export default function StockDetailScreen({ route }: NativeStackScreenProps<Root
           <OrderForm quote={q} />
         </View>
         <View style={s.card}>
-          <Text style={s.title}>목표가·손절가 알림</Text>
-          <Help label="왜 미리 정하나요?" text={HELP.target} />
-          <Text style={[s.rowSub, { marginBottom: 8 }]}>
-            현재가 {won(q.close)}원 · 예시: 목표 +10% {won(q.close * 1.1)}원 / 손절 -7% {won(q.close * 0.93)}원
-          </Text>
+          <Text style={s.title}>팔 가격 알림</Text>
           <Field label="목표가(원) 이상이면 알림" value={target} onChangeText={setTarget} keyboardType="number-pad" />
           <Field label="손절가(원) 이하이면 알림" value={stop} onChangeText={setStop} keyboardType="number-pad" />
           <Btn
-            title={`📗 모범 답안으로 채우기 (목표 ${won(model.targetPrice)} / 손절 ${won(model.stopPrice)})`}
-            kind="ghost"
+            title="📗 추천 값 채우기"
+            kind="primary"
             onPress={() => {
               setTarget(String(model.targetPrice));
               setStop(String(model.stopPrice));

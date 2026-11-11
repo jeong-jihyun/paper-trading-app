@@ -4,9 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import { useMarket } from '../context/MarketContext';
 import { subscribeCash, subscribeHoldings, subscribeOrders } from '../services/account';
 import { Notice, s } from '../components/ui';
-import { GuideBanner, Help } from '../components/guide';
+import { GuideBanner } from '../components/guide';
 import { useGuide } from '../context/GuideContext';
-import { HELP } from '../utils/guide';
 import { INITIAL_CASH } from '../config';
 import { evaluate } from '../utils/trading';
 import { changeColor, colors, pct, signed, won } from '../utils/format';
@@ -48,13 +47,11 @@ export default function AccountScreen() {
           <Text style={[s.rowSub, { marginTop: 4, marginBottom: 6 }]}>
             처음 {won(INITIAL_CASH)}원 대비 {signed(cash + evalSum - INITIAL_CASH)}원
           </Text>
-          <Help label="총평가금액·평가손익이 뭔가요?" text={`${HELP.total}\n\n${HELP.pnl}`} />
         </View>
 
         <View style={s.card}>
           <Text style={s.title}>보유 종목</Text>
-          <Help label="평균단가·수익률 보는 법" text={HELP.avg} />
-          {rows.length === 0 && <Text style={{ color: colors.sub }}>보유 종목이 없습니다. 주문 탭에서 매수하면 여기에 나타납니다.</Text>}
+          {rows.length === 0 && <Text style={{ color: colors.sub }}>보유 종목이 없습니다.</Text>}
           {rows.map(({ h, ev }) => (
             <View key={h.code} style={{ paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: colors.line }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
