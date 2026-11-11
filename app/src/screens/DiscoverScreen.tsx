@@ -6,6 +6,8 @@ import { useMarket } from '../context/MarketContext';
 import { removeAlert, subscribeAlerts, subscribeNotifications } from '../services/account';
 import { Notice, QuoteRow, Segment, s } from '../components/ui';
 import { colors, won } from '../utils/format';
+import { GuideBanner, Help } from '../components/guide';
+import { HELP } from '../utils/guide';
 import type { AlertDoc, NotificationDoc } from '../types';
 import type { TabParamList } from '../navigation';
 
@@ -35,8 +37,10 @@ export default function DiscoverScreen({ navigation }: BottomTabScreenProps<TabP
     <ScrollView style={s.screen}>
       <Notice date={date} />
       <View style={s.pad}>
+        <GuideBanner here="Discover" />
         <View style={s.card}>
           <Text style={s.title}>종목 발굴</Text>
+          <Help label="이 목록은 어떻게 보나요?" text={HELP.discover} />
           <Segment
             value={filter}
             onChange={setFilter}
@@ -53,6 +57,7 @@ export default function DiscoverScreen({ navigation }: BottomTabScreenProps<TabP
 
         <View style={s.card}>
           <Text style={s.title}>내 알림</Text>
+          <Help label="목표가·손절가 알림이란?" text={HELP.target} />
           {alerts.length === 0 && <Text style={{ color: colors.sub }}>종목 상세 화면에서 알림을 등록할 수 있습니다.</Text>}
           {alerts.map((a) => (
             <View key={a.id} style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 6 }}>

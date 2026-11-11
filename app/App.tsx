@@ -9,6 +9,8 @@ import { signOut } from 'firebase/auth';
 import { auth } from './src/firebase';
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { MarketProvider } from './src/context/MarketContext';
+import { GuideProvider } from './src/context/GuideContext';
+import GuideScreen from './src/screens/GuideScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import WatchlistScreen from './src/screens/WatchlistScreen';
 import OrderScreen from './src/screens/OrderScreen';
@@ -20,6 +22,7 @@ import { colors } from './src/utils/format';
 import type { RootParamList, TabParamList } from './src/navigation';
 
 const TAB_ICONS: Record<keyof TabParamList, string> = {
+  Guide: '🧭',
   Watchlist: '⭐',
   Order: '🧾',
   Account: '💼',
@@ -40,6 +43,7 @@ function Tabs() {
         tabBarIcon: ({ focused }) => <Text style={{ fontSize: 20, opacity: focused ? 1 : 0.55 }}>{TAB_ICONS[route.name]}</Text>,
       })}
     >
+      <Tab.Screen name="Guide" component={GuideScreen} options={{ title: '가이드' }} />
       <Tab.Screen
         name="Watchlist"
         component={WatchlistScreen}
@@ -67,6 +71,7 @@ function Root() {
   if (!user) return <LoginScreen />;
   return (
     <MarketProvider>
+      <GuideProvider>
       <Stack.Navigator>
         <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
         <Stack.Screen
@@ -75,6 +80,7 @@ function Root() {
           options={{ title: '현재가', headerStyle: { backgroundColor: colors.brand }, headerTintColor: '#fff' }}
         />
       </Stack.Navigator>
+      </GuideProvider>
     </MarketProvider>
   );
 }

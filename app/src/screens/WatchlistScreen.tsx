@@ -6,6 +6,8 @@ import { useMarket } from '../context/MarketContext';
 import { setWatch, subscribeWatchlist } from '../services/account';
 import { Notice, QuoteRow, s } from '../components/ui';
 import { StockSearch } from '../components/StockSearch';
+import { GuideBanner, Help } from '../components/guide';
+import { HELP } from '../utils/guide';
 import type { WatchItem } from '../types';
 import type { TabParamList } from '../navigation';
 
@@ -25,11 +27,14 @@ export default function WatchlistScreen({ navigation }: BottomTabScreenProps<Tab
         refreshControl={<RefreshControl refreshing={loading} onRefresh={reload} />}
         ListHeaderComponent={
           <View style={s.pad}>
+            <GuideBanner here="Watchlist" />
+            <Help label="관심종목이 뭔가요? 색은 무슨 뜻인가요?" text={`${HELP.watch}\n\n${HELP.price}`} />
             <StockSearch onPick={(q) => user && setWatch(user.uid, q.code, q.name, true)} />
             {error && <Text style={{ color: 'red' }}>{error}</Text>}
+            {items.length > 0 && <Text style={s.rowSub}>종목을 누르면 현재가·차트·주문 화면이 열립니다.</Text>}
           </View>
         }
-        ListEmptyComponent={<Text style={s.empty}>위에서 종목을 검색해 관심종목에 추가하세요.</Text>}
+        ListEmptyComponent={<Text style={s.empty}>{'아직 담은 종목이 없습니다.\n위 검색창에 종목 이름을 입력하고, 나온 종목을 누르세요.'}</Text>}
         renderItem={({ item }) => {
           const q = byCode[item.code];
           if (!q) return null;

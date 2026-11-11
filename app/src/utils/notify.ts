@@ -8,3 +8,21 @@ export function notify(title: string, message?: string): void {
   }
   Alert.alert(title, message);
 }
+
+/** 확인창. "계속"을 누르면 true. */
+export function confirm(title: string, message: string, okLabel = '계속'): Promise<boolean> {
+  if (Platform.OS === 'web') {
+    return Promise.resolve(typeof window !== 'undefined' ? window.confirm(`${title}\n\n${message}`) : false);
+  }
+  return new Promise((resolve) => {
+    Alert.alert(
+      title,
+      message,
+      [
+        { text: '고치러 가기', style: 'cancel', onPress: () => resolve(false) },
+        { text: okLabel, onPress: () => resolve(true) },
+      ],
+      { cancelable: true, onDismiss: () => resolve(false) },
+    );
+  });
+}
