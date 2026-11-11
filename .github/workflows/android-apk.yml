@@ -1,0 +1,83 @@
+name: android-apk
+
+# 폰에서 바로 설치해 볼 수 있는 APK를 만들어 GitHub 릴리스에 올립니다.
+# 실행: GitHub 저장소 > Actions > android-apk > Run workflow (또는 app/ 변경 후 main에 push)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['app/**', '.github/workflows/android-apk.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      # Firebase 웹 설정값(공개용 값, 웹 배포에도 그대로 들어가는 값)
+      EXPO_PUBLIC_FIREBASE_API_KEY: AIzaSyA6-7L7hyu3VxhwNSLDIHRGGOWMF0SgZwU
+      EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN: paper-trading-app-47754.firebaseapp.com
+      EXPO_PUBLIC_FIREBASE_PROJECT_ID: paper-trading-app-47754
+      EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET: paper-trading-app-47754.firebasestorage.app
+      EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: '287881198269'
+      EXPO_PUBLIC_FIREBASE_APP_ID: 1:287881198269:web:9501987405b47c1e2795d4
+      CI: 'true'
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: 의존성 설치
+        run: npm ci --no-audit --no-fund
+
+      - name: 계산 로직 테스트
+        run: npx jest
+
+      - name: 안드로이드 프로젝트 생성 (expo prebuild)
+        run: npx expo prebuild --platform android --no-install
+
+      - name: APK 빌드 (release)
+        working-directory: app/android
+        run: ./gradlew assembleRelease --no-daemon -Dorg.gradle.jvmargs="-Xmx3g"
+
+      - name: APK 이름 정리
+        run: |
+          mkdir -p ../out
+          cp android/app/build/outputs/apk/release/app-release.apk ../out/paper-trading.apk
+          ls -lh ../out
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper-trading-apk
+          path: out/paper-trading.apk
+
+      - name: 릴리스에 올리기 (폰에서 바로 받기)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        working-directory: ${{ github.workspace }}
+        run: |
+          TAG="apk-${{ github.run_number }}"
+          gh release create "$TAG" out/paper-trading.apk \
+            --title "모의투자 트레이더 APK #${{ github.run_number }}" \
+            --notes "폰에서 이 파일을 받아 설치하세요. (연습용 모의투자, 서명은 테스트용)" \
+            --latest
+          echo "### APK 받기" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://github.com/${{ github.repository }}/releases/tag/$TAG" >> "$GITHUB_STEP_SUMMARY"
